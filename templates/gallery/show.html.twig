@@ -1,0 +1,7 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block title %}Image{% endblock %}
+{% block body %}
+<h1>Image</h1>
+<img src="{{ gallery.image }}" width="400">
+<a href="{{ path('gallery_index') }}">Retour</a>
+{% endblock %}

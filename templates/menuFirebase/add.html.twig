@@ -1,0 +1,68 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4">Ajouter un nouveau menu</h2>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <form id="menuForm" action="{{ path('firebase_menu_add') }}" method="POST" enctype="multipart/form-data" class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label for="titre" class="form-label">Titre</label>
+            <input type="text" name="titre" id="titre" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" name="description" id="description" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select name="type" id="type" class="form-select" required>
+                <option value="" disabled selected>Choisir un type</option>
+                {% for t in types %}
+                    <option value="{{ t }}">{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Prix (TND)</label>
+            <input type="number" name="price" id="price" class="form-control" step="0.01" min="0" required>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Ajouter Menu</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('menuForm').addEventListener('submit', function(event) {
+        const titre = document.getElementById('titre').value.trim();
+        const description = document.getElementById('description').value.trim();
+        const image = document.getElementById('image').value;
+        const type = document.getElementById('type').value;
+        const price = document.getElementById('price').value.trim();
+
+        if (titre && description && image && type && price) {
+            const confirmation = confirm("Tous les champs sont remplis. Voulez-vous vraiment ajouter ce menu ?");
+            if (!confirmation) {
+                event.preventDefault();
+            }
+        } else {
+            event.preventDefault();
+            alert("Veuillez remplir tous les champs avant de soumettre le formulaire.");
+        }
+    });
+</script>
+{% endblock %}

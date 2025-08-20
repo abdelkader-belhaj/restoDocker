@@ -1,0 +1,159 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Liste des Réservations{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Gestion des Réservations</h2>
+            <p class="text-muted mb-0">Gérez toutes vos réservations de table</p>
+        </div>
+        <a href="{{ path('firebase_table_new') }}" class="btn btn-primary d-flex align-items-center">
+            <i class="fas fa-plus-circle me-2"></i>
+            Nouvelle réservation
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="border-top-0 px-4 py-3">Client</th>
+                            <th class="border-top-0 py-3">Contact</th>
+                            <th class="border-top-0 py-3">Réservation</th>
+                            <th class="border-top-0 py-3">Personnes</th>
+                            <th class="border-top-0 py-3">Message</th>
+                            <th class="border-top-0 py-3 text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, table in tables %}
+                        <tr>
+                            <td class="px-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle bg-primary text-white me-3">
+                                        {{ table.name|slice(0,1)|upper }}
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ table.name|default('N/A') }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                <div>
+                                    <div class="small text-muted mb-1">
+                                        <i class="fas fa-envelope me-1"></i>{{ table.email|default('N/A') }}
+                                    </div>
+                                    <div class="small text-muted">
+                                        <i class="fas fa-phone me-1"></i>{{ table.tel|default('N/A') }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                <div class="small">
+                                    <div class="mb-1">
+                                        <i class="far fa-calendar me-1"></i>{{ table.date|default('N/A') }}
+                                    </div>
+                                    <div>
+                                        <i class="far fa-clock me-1"></i>{{ table.time|default('N/A') }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                <span class="badge bg-info">
+                                    <i class="fas fa-users me-1"></i>
+                                    {{ table.numberPeople|default('0') }}
+                                </span>
+                            </td>
+                            <td class="py-3">
+                                <div class="text-truncate" style="max-width: 200px;" title="{{ table.message|default('Aucun message') }}">
+                                    {{ table.message|default('Aucun message') }}
+                                </div>
+                            </td>
+                            <td class="text-end pe-4 py-3">
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <a href="{{ path('firebase_table_edit', {'key': key}) }}" 
+                                       class="btn btn-warning btn-sm d-flex align-items-center">
+                                        <i class="fas fa-edit me-2"></i>
+                                        <span>Modifier</span>
+                                    </a>
+                                    <form method="post" action="{{ path('firebase_table_delete', {'key': key}) }}" 
+                                          class="d-inline" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ key) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center">
+                                            <i class="fas fa-trash-alt me-2"></i>
+                                            <span>Supprimer</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fas fa-calendar-times fa-3x mb-3"></i>
+                                <p class="mb-0">Aucune réservation trouvée</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border-color: #f0f0f0;
+}
+
+.btn-light:hover {
+    background-color: #e9ecef;
+    border-color: #e9ecef;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+</style>
+{% endblock %}

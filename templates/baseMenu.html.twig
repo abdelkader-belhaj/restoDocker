@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borcelle Resto - Food Menu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .menu-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        /* Decorative corners */
+        .corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #ffa500;
+        }
+        
+        .corner-tl {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner-tr {
+            top: 15px;
+            right: 15px;
+            border-left: none;
+            border-bottom: none;
+        }
+        
+        .corner-bl {
+            bottom: 15px;
+            left: 15px;
+            border-right: none;
+            border-top: none;
+        }
+        
+        .corner-br {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .corner::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffa500;
+        }
+        
+        .corner-tl::before { top: -4px; left: -4px; }
+        .corner-tr::before { top: -4px; right: -4px; }
+        .corner-bl::before { bottom: -4px; left: -4px; }
+        .corner-br::before { bottom: -4px; right: -4px; }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: #ffa500;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+        
+        .restaurant-name {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .main-title {
+            color: #ffa500;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            color: #cccccc;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .food-showcase {
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .food-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .food-item.main {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #ffffff;
+        }
+        
+        .food-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .menu-content {
+            padding: 30px 20px;
+        }
+        
+        .menu-categories {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+        
+        .category {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .category-title {
+            background: #ffa500;
+            color: #1a1a1a;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .menu-items {
+            list-style: none;
+        }
+        
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            color: #ffffff;
+            font-size: 12px;
+            margin-bottom: 8px;
+            padding: 0 5px;
+        }
+        
+        .item-name {
+            font-weight: 400;
+        }
+        
+        .item-price {
+            color: #ffa500;
+            font-weight: 600;
+        }
+        
+        .other-menu {
+            text-align: center;
+            margin: 30px 0 20px;
+        }
+        
+        .other-menu-title {
+            background: #ffa500;
+            color: #1a1a1a;
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .additional-items {
+            color: #ffffff;
+            font-size: 12px;
+            text-align: left;
+            margin-top: 20px;
+        }
+        
+        .additional-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding: 0 20px;
+        }
+        
+        .website-info {
+            text-align: center;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+        
+        .phone, .website {
+            color: #ffa500;
+            font-size: 12px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <!-- Decorative corners -->
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">X</div>
+            <div class="restaurant-name">BORCELLE RESTO</div>
+            <h1 class="main-title">FOOD MENU</h1>
+            <p class="subtitle">The following is a list of the foods available in our restaurant.</p>
+        </div>
+        
+        <!-- Food showcase -->
+        <div class="food-showcase">
+            <div class="food-item">
+                <div style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">Pasta</div>
+            </div>
+            <div class="food-item main">
+                <div style="background: linear-gradient(45deg, #8B4513, #CD853F); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">Burger</div>
+            </div>
+            <div class="food-item">
+                <div style="background: linear-gradient(45deg, #ff4757, #ff6b7a); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">Pizza</div>
+            </div>
+        </div>
+        
+        <!-- Menu content -->
+        <div class="menu-content">
+            <div class="menu-categories">
+                <!-- Pasta -->
+                <div class="category">
+                    <div class="category-title">Pasta</div>
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <span class="item-name">Special Pasta</span>
+                            <span class="item-price">$ 2</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Small Pasta</span>
+                            <span class="item-price">$ 3</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Medium Pasta</span>
+                            <span class="item-price">$ 4</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Big Pasta</span>
+                            <span class="item-price">$ 5</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Spicy Pasta</span>
+                            <span class="item-price">$ 6</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Burger -->
+                <div class="category">
+                    <div class="category-title">Burger</div>
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <span class="item-name">Spicy Burger</span>
+                            <span class="item-price">$ 2</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Small Burger</span>
+                            <span class="item-price">$ 3</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Medium Burger</span>
+                            <span class="item-price">$ 4</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Big Burger</span>
+                            <span class="item-price">$ 5</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Tomato Burger</span>
+                            <span class="item-price">$ 6</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Pizza -->
+                <div class="category">
+                    <div class="category-title">Pizza</div>
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <span class="item-name">Special Pizza</span>
+                            <span class="item-price">$ 2</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Small Pizza</span>
+                            <span class="item-price">$ 3</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Medium Pizza</span>
+                            <span class="item-price">$ 4</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Big Pizza</span>
+                            <span class="item-price">$ 5</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="item-name">Spicy Pizza</span>
+                            <span class="item-price">$ 6</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Other Food Menu -->
+            <div class="other-menu">
+                <div class="other-menu-title">Other Food Menu</div>
+            </div>
+            
+            <div class="additional-items">
+                <div class="additional-item">
+                    <span>Food 1</span>
+                    <span style="color: #ffa500;">$ 2</span>
+                </div>
+                <div class="additional-item">
+                    <span>Food 2</span>
+                    <span style="color: #ffa500;">$ 3</span>
+                </div>
+                <div class="additional-item">
+                    <span>Food 3</span>
+                    <span style="color: #ffa500;">$ 4</span>
+                </div>
+                <div class="additional-item">
+                    <span>Food 4</span>
+                    <span style="color: #ffa500;">$ 5</span>
+                </div>
+            </div>
+            
+            <!-- Website -->
+            <div class="website-info">
+                🌐 animalia-life.club
+            </div>
+            
+            <!-- Contact -->
+            <div class="contact-info">
+                <div class="phone">📞 +123-456-7890</div>
+                <div class="website">realtygreestate.com 🌐</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

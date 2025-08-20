@@ -1,0 +1,119 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Détails du Contact{% endblock %}
+
+{% block body %}
+    {# Flash messages #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} mb-3" role="alert">
+                {% if label == 'success' %}
+                    <i class="fas fa-check-circle me-2"></i>
+                {% elseif label == 'warning' %}
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                {% elseif label == 'danger' %}
+                    <i class="fas fa-times-circle me-2"></i>
+                {% else %}
+                    <i class="fas fa-info-circle me-2"></i>
+                {% endif %}
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Détails du Contact</h2>
+            <a href="{{ path('contact_index') }}" class="btn btn-secondary d-flex align-items-center">
+                <i class="fas fa-arrow-left me-1"></i>Retour à la liste
+            </a>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-xl-8">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <div class="d-flex align-items-center">
+                            <h5 class="mb-0">Informations du Contact</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label text-uppercase text-xxs font-weight-bolder opacity-7">Nom</label>
+                                    <p class="form-control-static mb-3 text-sm">{{ contact.name }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label text-uppercase text-xxs font-weight-bolder opacity-7">Email</label>
+                                    <p class="form-control-static mb-3 text-sm">{{ contact.email }}</p>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-control-label text-uppercase text-xxs font-weight-bolder opacity-7">Sujet</label>
+                                    <p class="form-control-static mb-3 text-sm">{{ contact.subject }}</p>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-control-label text-uppercase text-xxs font-weight-bolder opacity-7">Message</label>
+                                    <div class="p-3 bg-light rounded mb-3">
+                                        <p class="text-sm mb-0">{{ contact.message|nl2br }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if contact.date is defined %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label text-uppercase text-xxs font-weight-bolder opacity-7">Date de contact</label>
+                                    <p class="form-control-static mb-3 text-sm">{{ contact.date|date('d/m/Y H:i') }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h5 class="mb-0">Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ path('contact_edit', {'key': key}) }}" 
+                               class="btn btn-warning w-100 mb-0 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-edit me-2"></i>Modifier
+                            </a>
+                            <form method="post" 
+                                  action="{{ path('contact_delete', {'key': key}) }}" 
+                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce contact ?');">
+                                <button type="submit" class="btn btn-danger w-100 mb-0 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-trash me-2"></i>Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .form-control-label {
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    .form-control-static {
+        font-weight: 500;
+    }
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+    </style>
+{% endblock %}

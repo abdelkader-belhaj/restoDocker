@@ -1,0 +1,17 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+<h1>Modifier Parttie</h1>
+
+<form action="{{ path('app_partties_update', {key: key}) }}" method="post">
+    <input type="text" name="titre" value="{{ parttie.titre }}">
+    <input type="number" name="price" value="{{ parttie.price }}">
+    <input type="text" name="debut" value="{{ parttie.debut }}">
+    <input type="text" name="ligne1" value="{{ parttie.ligne1 }}">
+    <input type="text" name="ligne2" value="{{ parttie.ligne2 }}">
+    <input type="text" name="ligne3" value="{{ parttie.ligne3 }}">
+    <input type="text" name="final" value="{{ parttie.final }}">
+    <input type="text" name="image" value="{{ parttie.image }}">
+    <button type="submit">Modifier</button>
+</form>
+{% endblock %}

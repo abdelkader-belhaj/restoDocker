@@ -1,0 +1,49 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Liste des Partties{% endblock %}
+
+{% block body %}
+<h1>🎉 Liste des Partties</h1>
+
+<hr>
+
+<h2>➕ Ajouter une Parttie</h2>
+<form action="{{ path('app_partties_create') }}" method="post" enctype="multipart/form-data">
+    <input type="text" name="titre" placeholder="Titre" required><br><br>
+    <input type="number" name="price" placeholder="Prix" required><br><br>
+    <input type="text" name="debut" placeholder="Début" required><br><br>
+    <input type="text" name="ligne1" placeholder="Ligne 1" required><br><br>
+    <input type="text" name="ligne2" placeholder="Ligne 2" required><br><br>
+    <input type="text" name="ligne3" placeholder="Ligne 3" required><br><br>
+    <input type="text" name="final" placeholder="Final" required><br><br>
+    <input type="file" name="image" required><br><br>
+    <button type="submit">✅ Ajouter</button>
+</form>
+
+<hr>
+
+<h2>📋 Liste des Partties</h2>
+{% if partties is not empty %}
+    {% for key, parttie in partties %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+            <h3>{{ parttie.titre }} — {{ parttie.price }} TND</h3>
+            <p><strong>Début :</strong> {{ parttie.debut }}</p>
+            <ul>
+                <li>{{ parttie.ligne1 }}</li>
+                <li>{{ parttie.ligne2 }}</li>
+                <li>{{ parttie.ligne3 }}</li>
+            </ul>
+            <p><strong>Final :</strong> {{ parttie.final }}</p>
+
+            {% if parttie.image %}
+                <img src="{{ parttie.image }}" alt="Image" style="max-width: 200px;"><br>
+            {% endif %}
+
+            <a href="{{ path('app_partties_edit', { key: key }) }}">✏️ Modifier</a> |
+            <a href="{{ path('app_partties_delete', { key: key }) }}" onclick="return confirm('Supprimer cette parttie ?')">🗑️ Supprimer</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucune parttie disponible pour le moment.</p>
+{% endif %}
+{% endblock %}

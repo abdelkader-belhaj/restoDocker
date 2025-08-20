@@ -1,0 +1,39 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Nouvelle Réservation{% endblock %}
+
+{% block body %}
+<h1>Nouvelle Réservation</h1>
+<form method="post">
+    <div class="mb-3">
+        <label>Nom</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Téléphone</label>
+        <input type="text" name="tel" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Date</label>
+        <input type="date" name="date" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Heure</label>
+        <input type="time" name="time" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Nombre de personnes</label>
+        <input type="number" name="numberPeople" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Message</label>
+        <textarea name="message" class="form-control"></textarea>
+    </div>
+    <button class="btn btn-success">Créer</button>
+    <a href="{{ path('firebase_table_index') }}" class="btn btn-secondary">Retour</a>
+</form>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }} mb-3" role="alert">
+            {% if label == 'success' %}
+                <i class="fas fa-check-circle me-2"></i>
+            {% elseif label == 'warning' %}
+                <i class="fas fa-exclamation-triangle me-2"></i>
+            {% elseif label == 'danger' %}
+                <i class="fas fa-times-circle me-2"></i>
+            {% else %}
+                <i class="fas fa-info-circle me-2"></i>
+            {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gestion des Menus</h2>
+    <a href="{{ path('firebase_menu_add') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Ajouter un menu
+    </a>
+</div>
+
+{% if menus is not empty %}
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table align-items-center justify-content-center mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Menu</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Type</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Prix</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2" style="min-width: 120px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, menu in menus %}
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2 align-items-center">
+                                    <div class="me-3">
+                                        {% if menu.image %}
+                                            <img src="{{ menu.image }}" class="menu-image" alt="{{ menu.titre }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                        {% else %}
+                                            <div class="menu-placeholder d-flex align-items-center justify-content-center" 
+                                                 style="width: 50px; height: 50px; background-color: #6c757d; color: white; border-radius: 8px; font-weight: bold;">
+                                                {{ menu.titre|slice(0, 1)|upper }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm">{{ menu.titre }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if menu.type %}
+                                    <span class="badge bg-primary text-xs font-weight-bold">{{ menu.type }}</span>
+                                {% else %}
+                                    <span class="text-muted text-xs">Non spécifié</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <p class="text-sm mb-0">
+                                    {% if menu.description %}
+                                        {{ menu.description|length > 80 ? menu.description|slice(0, 80) ~ '...' : menu.description }}
+                                    {% else %}
+                                        <span class="text-muted">Aucune description</span>
+                                    {% endif %}
+                                </p>
+                            </td>
+                            <td>
+                                {% if menu.price is defined %}
+                                    <span class="text-sm">{{ menu.price|number_format(2, '.', ' ') }} TND</span>
+                                {% else %}
+                                    <span class="text-muted text-sm">—</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ path('firebase_menu_edit', {'key': key}) }}" 
+                                       class="btn btn-warning btn-xs px-2 py-1" 
+                                       title="Modifier"
+                                       style="font-size: 0.75rem;">
+                                        <i class="fas fa-edit me-1"></i>
+                                        Modifier
+                                    </a>
+                                    <form method="POST" 
+                                          action="{{ path('firebase_menu_delete', {'key': key}) }}" 
+                                          style="display: inline;" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer le menu « {{ menu.titre }} » ?');">
+                                        <button type="submit" 
+                                                class="btn btn-danger btn-xs px-2 py-1" 
+                                                title="Supprimer"
+                                                style="font-size: 0.75rem;">
+                                            <i class="fas fa-trash me-1"></i>
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center mt-4">
+        <div class="card">
+            <div class="card-body py-5">
+                <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">Aucun menu trouvé</h5>
+                <p class="text-muted mb-3">Commencez par ajouter votre premier menu.</p>
+                <a href="{{ path('firebase_menu_add') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Ajouter un menu
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<style>
+.menu-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.table th {
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 600;
+}
+.gap-2 {
+    gap: 0.5rem;
+}
+</style>
+
+{% endblock %}

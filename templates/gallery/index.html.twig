@@ -1,0 +1,124 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block title %}Galerie{% endblock %}
+{% block body %}
+    {# Flash messages #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} mb-3" role="alert">
+                {% if label == 'success' %}
+                    <i class="fas fa-check-circle me-2"></i>
+                {% elseif label == 'warning' %}
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                {% elseif label == 'danger' %}
+                    <i class="fas fa-times-circle me-2"></i>
+                {% else %}
+                    <i class="fas fa-info-circle me-2"></i>
+                {% endif %}
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Header avec bouton d'ajout #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Gestion de la Galerie</h2>
+        <a href="{{ path('gallery_new') }}" class="btn btn-primary d-flex align-items-center">
+            <i class="fas fa-plus me-1"></i>Ajouter une image
+        </a>
+    </div>
+
+    {% if galleries is not empty %}
+        <div class="row g-4">
+            {% for key, g in galleries %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ g.image }}" class="card-img-top gallery-image" alt="Image galerie">
+                            {% if g.category is defined and g.category %}
+                                <span class="position-absolute top-0 end-0 badge bg-primary m-2">
+                                    {{ g.category }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title text-truncate mb-2">
+                                {% if g.title is defined %}
+                                    {{ g.title }}
+                                {% else %}
+                                    Image {{ loop.index }}
+                                {% endif %}
+                            </h6>
+                            {% if g.description is defined and g.description %}
+                                <p class="card-text small text-muted mb-3">
+                                    {{ g.description|length > 50 ? g.description|slice(0, 50) ~ '...' : g.description }}
+                                </p>
+                            {% endif %}
+                            <div class="d-flex justify-content-center gap-2">
+                        
+                                <a href="{{ path('gallery_edit', {key: key}) }}"
+                                   class="btn btn-warning btn-xs px-2 py-1"
+                                   title="Modifier"
+                                   style="font-size: 0.75rem;">
+                                    <i class="fas fa-edit me-1"></i>Modifier
+                                </a>
+                                <form action="{{ path('gallery_delete', {key: key}) }}"
+                                      method="post"
+                                      style="display:inline"
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette image ?');">
+                                    <button type="submit"
+                                            class="btn btn-danger btn-xs px-2 py-1"
+                                            title="Supprimer"
+                                            style="font-size: 0.75rem;">
+                                        <i class="fas fa-trash me-1"></i>Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center mt-4">
+            <div class="card">
+                <div class="card-body py-5">
+                    <i class="fas fa-images fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Aucune image dans la galerie</h5>
+                    <p class="text-muted mb-3">Commencez par ajouter votre première image.</p>
+                    <a href="{{ path('gallery_new') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Ajouter une image
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <style>
+    .gallery-image {
+        height: 200px;
+        object-fit: cover;
+    }
+    .card {
+        transition: transform 0.2s ease-in-out;
+        border: none;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .card-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+    .badge {
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+    .btn-xs {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+    .gap-2 {
+        gap: 0.5rem;
+    }
+    </style>
+{% endblock %}

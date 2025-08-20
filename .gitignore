@@ -1,0 +1,17 @@
+
+# 🔒 Clé Firebase privée
+/config/firebase/*.json
+
+# 📦 Symfony : vendor, cache, logs
+/vendor/
+/var/
+!/var/.gitkeep  # Si tu veux garder un dossier vide dans Git
+
+# ⚙️ Fichiers d'environnement locaux (jamais en prod)
+.env.local
+.env.*          # Ignore tous sauf .env
+!.env           # On garde le fichier .env de base (exemple, pas sensible)
+
+# 🛠️ Config IDE (optionnel)
+.idea/
+.vscode/

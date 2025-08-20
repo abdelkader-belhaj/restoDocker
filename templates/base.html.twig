@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Index - Delicious Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ asset('assets/img/apple-touch-icon.png') }}"  rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy:wght@400&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}"  rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}"  rel="stylesheet">
+  <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+
+        <title>{% block title %}Bienvenue!{% endblock %}</title>
+        {% block stylesheets %}
+            {# ...vos feuilles de style ici... #}
+        {% endblock %}
+    </head>
+    
+    <body class="index-page">
+     <header id="header" class="header fixed-top">
+        
+        <div class="branding d-flex align-items-center">
+            <div class="container position-relative d-flex align-items-center justify-content-between">
+                
+                <!-- Logo à gauche -->
+                <a class="logo d-flex align-items-center">
+                    <!-- Uncomment the line below if you also wish to use an image logo -->
+                    <!-- <img src="assets/img/logo.png" alt=""> -->
+                    <h1 class="sitename">Délicieux</h1>
+                </a>
+
+                <!-- Navigation avec auth intégrée -->
+                <nav id="navmenu" class="navmenu">
+                    <ul>
+                        <li><a href="#hero" class="active">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#specials">Specials</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#chefs">Chefs</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#book-a-table" class="cta-btn">Réserver une table</a></li>
+                        
+   {% if app.session.get('user') %}
+    <!-- Utilisateur connecté -->
+    <li class="nav-auth-section">
+        <div class="dropdown">
+            <button class="btn btn-auth dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle me-2"></i>
+                <span>nom : {{ app.session.get('user').nomComplete }}</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end auth-dropdown" aria-labelledby="userDropdown">
+                <li class="dropdown-header">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person-badge me-2"></i>
+                        <div>
+                            <h6 class="mb-0">{{ app.session.get('user').nomComplete }}</h6>
+                            <small class="text-muted">{{ app.session.get('user').email }}</small>
+                        </div>
+                    </div>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                {% if app.session.get('user').type == 'client' %}
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <i class="bi bi-person me-2"></i> Mon Profil
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+                        <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    
+{% else %}
+    <!-- Utilisateur non connecté -->
+    <li class="nav-auth-section">
+        <div class="dropdown">
+            <button class="btn btn-auth dropdown-toggle d-flex align-items-center" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person me-2"></i>
+                <span>Mon Compte</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end auth-dropdown" aria-labelledby="authDropdown">
+                <li class="dropdown-header">
+                    <h6 class="mb-0">Accéder à votre compte</h6>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" href="{{ path('app_login') }}">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Se connecter
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{{ path('app_register') }}">
+                        <i class="bi bi-person-plus me-2"></i> Créer un compte
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+{% endif %}
+
+
+                        
+                    </ul>
+                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+                </nav>
+
+            </div>
+        </div>
+    </header>
+
+    <style>
+    /* Styles pour section auth unifiée */
+    .nav-auth-section,
+    .nav-user-section {
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Bouton d'authentification unifié */
+    .btn-auth {
+        background: transparent;
+        border: 1px solid rgba(44, 62, 80, 0.2);
+        border-radius: 25px;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+        color: #ff6b35;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .btn-auth:hover {
+        background: rgba(255, 107, 53, 0.1);
+        border-color: #ff6b35;
+        color: #ff6b35;
+        transform: translateY(-1px);
+    }
+
+    .btn-auth:focus {
+        box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+    }
+
+    /* Dropdown d'authentification */
+    .auth-dropdown {
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        padding: 8px 0;
+        min-width: 200px;
+        margin-top: 5px;
+    }
+
+    .auth-dropdown .dropdown-header {
+        padding: 12px 16px;
+        background: rgba(248, 249, 250, 0.7);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .auth-dropdown .dropdown-header h6 {
+        margin-bottom: 0;
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 14px;
+    }
+
+    .auth-dropdown .dropdown-item {
+        padding: 10px 16px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .auth-dropdown .dropdown-item:hover {
+        background: rgba(255, 107, 53, 0.1);
+        color: #ff6b35;
+    }
+
+    
+
+    /* Bouton profil dans navbar */
+    .btn-profile {
+        background: rgba(255, 107, 53, 0.1);
+        border: 1px solid rgba(255, 107, 53, 0.2);
+        border-radius: 25px;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+        color: #ff6b35;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .btn-profile:hover {
+        background: rgba(255, 107, 53, 0.15);
+        border-color: #ff6b35;
+        color: #ff6b35;
+        transform: translateY(-1px);
+    }
+
+    .profile-name {
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+
+    /* Dropdown profil - style minimal */
+    .profile-dropdown {
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        padding: 8px 0;
+        min-width: 220px;
+        margin-top: 5px;
+    }
+
+    .profile-dropdown .dropdown-header {
+        padding: 10px 16px;
+        background: rgba(248, 249, 250, 0.7);
+    }
+
+    .profile-dropdown .dropdown-header h6 {
+        margin-bottom: 2px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .profile-dropdown .dropdown-item {
+        padding: 8px 16px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    .profile-dropdown .dropdown-item:hover {
+        background: rgba(255, 107, 53, 0.1);
+        color: #ff6b35;
+    }
+
+    .profile-dropdown .dropdown-divider {
+        margin: 4px 0;
+    }
+
+    /* Responsive pour navbar */
+    @media (max-width: 1199px) {
+        .nav-auth-section,
+        .nav-user-section {
+            margin-left: 15px;
+        }
+        
+        .btn-auth, .btn-profile {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        .profile-name {
+            max-width: 80px;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .nav-auth-section,
+        .nav-user-section {
+            margin-left: 10px;
+        }
+        
+        .btn-auth, .btn-profile {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .btn-auth span, .profile-name {
+            display: none;
+        }
+        
+        .btn-auth i, .btn-profile i {
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        /* Cache les boutons auth sur mobile - ils seront dans le menu mobile */
+        .nav-auth-section,
+        .nav-user-section {
+            display: none;
+        }
+    }
+
+    /* Amélioration du mobile toggle */
+    .mobile-nav-toggle {
+        color: #2c3e50;
+        font-size: 24px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-nav-toggle:hover {
+        color: #ff6b35;
+        transform: scale(1.1);
+    }
+
+    /* Séparateur visuel subtil */
+    .nav-auth-section::before {
+        content: '';
+        width: 1px;
+        height: 20px;
+        background: rgba(44, 62, 80, 0.15);
+        margin-right: 15px;
+        display: inline-block;
+    }
+    </style>
+
+    <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+
+        <div class="carousel-item active">
+          <img src="{{ asset('assets/img/hero-carousel/hero-carousel-1.jpg') }}" alt="">
+          <div class="carousel-container">
+            <h2><span>Délices</span> Resto</h2>
+            <p>Bienvenue sur Délices Resto, votre plateforme dédiée aux amoureux de la bonne cuisine. Découvrez une variété de plats savoureux, commandez en quelques clics et profitez d'une expérience culinaire unique, chez vous ou sur place.</p>
+            <div>
+              <a href="#menu" class="btn-get-started">Notre menu</a>
+              <a href="#book-a-table" class="btn-get-started">À table !</a>
+            </div>
+          </div>
+        </div><!-- End Carousel Item -->
+
+        <div class="carousel-item">
+          <img src="{{ asset('assets/img/hero-carousel/hero-carousel-2.jpg') }}" alt="">
+          <div class="carousel-container">
+            <h2>À vrai dire, nous assumons nos choix</h2>
+            <p>>Dans les moments libres, lorsque tout nous est permis, rien ne nous empêche de réaliser ce qui nous passionne le plus. Chaque plaisir mérite d'être vécu pleinement, et chaque difficulté peut être surmontée avec détermination.</p>
+            <div>
+              <a href="#menu" class="btn-get-started">Notre menu</a>
+              <a href="#book-a-table" class="btn-get-started">À table !</a>
+            </div>
+          </div>
+        </div><!-- End Carousel Item -->
+
+        <div class="carousel-item">
+          <img src="{{ asset('assets/img/hero-carousel/hero-carousel-3.jpg') }}" alt="">
+          <div class="carousel-container">
+            <h2>Parfois, dans certaines circonstances</h2>
+            <p>Il est des moments où la vie nous révèle ses vérités cachées. Nul ne cherche la douleur pour elle-même, mais parfois elle devient le chemin vers de grandes découvertes, portées par ceux qui suivent la voie de la passion et de la vérité.</p>
+            <div>
+              <a href="#menu" class="btn-get-started">Notre menu</a>
+              <a href="#book-a-table" class="btn-get-started">À table !</a>
+            </div>
+          </div>
+        </div><!-- End Carousel Item -->
+
+        <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+        </a>
+
+        <a class="carousel-control-next" href="#hero-carousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+        </a>
+
+        <ol class="carousel-indicators"></ol>
+
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- About Section -->
+    <section id="about" class="about section light-background">
+
+      <div class="container">
+
+        <div class="row gy-4">
+          <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="100">
+            <img src="{{ asset('assets/img/about.jpg') }}" class="img-fluid" alt="">
+            <a href="https://www.youtube.com/watch?v=WW0SLuX8HsI" class="glightbox pulsating-play-btn"></a>
+          </div>
+          <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
+            <h3>Un plaisir gourmand à partager</h3>
+            <p class="fst-italic">
+              Découvrez une expérience culinaire unique, alliant saveurs authentiques et ambiance chaleureuse. 
+              Chaque plat est préparé avec soin pour ravir vos papilles et sublimer vos moments partagés.
+            </p>
+            <ul>
+              <li><i class="bi bi-check2-all"></i> <span>Des ingrédients frais et de qualité, soigneusement sélectionnés.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span>Un service attentionné pour une expérience sans faille.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span>Des plats créatifs et équilibrés, adaptés à toutes vos envies.</span></li>
+            </ul>
+            <p>
+              Que ce soit pour un dîner entre amis, un repas d'affaires ou une occasion spéciale, 
+              laissez-vous tenter par notre savoir-faire et profitez d'un moment d'exception.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+
+    <!-- Why Us Section -->
+    <section id="why-us" class="why-us section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Pourquoi nous choisir</h2>
+        <div><span>Pourquoi choisir</span> <span class="description-title">Notre Cuisine</span></div>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-item">
+              <span>01</span>
+              <h4><a href="" class="stretched-link">Cuisine de qualité</a></h4>
+              <p>Nous sélectionnons les meilleurs ingrédients pour vous offrir des plats savoureux, 
+              préparés avec soin par nos chefs passionnés.</p>
+            </div>
+          </div><!-- Card Item -->
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-item">
+              <span>02</span>
+              <h4><a href="" class="stretched-link">Excellence garantie</a></h4>
+              <p>Chaque plat est préparé avec passion et précision, pour vous offrir une expérience culinaire inoubliable, dans un cadre chaleureux et raffiné.</p>
+            </div>
+          </div><!-- Card Item -->
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card-item">
+              <span>03</span>
+              <h4><a href="" class="stretched-link">Un service sur mesure</a></h4>
+              <p>Nous vous accueillons avec attention et bienveillance. Chaque détail est pensé pour répondre à vos attentes et vous faire passer un moment agréable.</p>
+            </div>
+          </div><!-- Card Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Why Us Section -->
+
+{% block bodyy %}
+
+
+{% endblock %}
+
+{% block bodyspec %}
+
+{% endblock %}
+
+{% block bodyparties %}
+
+{% endblock %}
+
+{% block bodyTable %}
+
+
+{% endblock %}
+
+{% block bodyGallery %}
+
+   {% endblock %}
+
+   {% block bodyChefs %}
+
+
+   {% endblock %}
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section dark-background">
+
+      <img src="{{ asset('assets/img/testimonials-bg.jpg') }}" class="testimonials-bg" alt="">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              }
+            }
+          </script>
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="{{ asset('assets/img/testimonials/testimonials-1.jpg') }}" class="testimonial-img" alt="Smiling man in a suit and tie facing forward with a confident and friendly expression, set against a softly blurred professional background">
+                <h3>Saul Goodman</h3>
+                <h4>Ceo &amp; Founder</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="{{ asset('assets/img/testimonials/testimonials-2.jpg') }}" class="testimonial-img" alt="">
+                <h3>Sara Wilsson</h3>
+                <h4>Designer</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="{{ asset('assets/img/testimonials/testimonials-3.jpg') }}" class="testimonial-img" alt="">
+                <h3>Jena Karlis</h3>
+                <h4>Store Owner</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="{{ asset('assets/img/testimonials/testimonials-4.jpg') }}" class="testimonial-img" alt="">
+                <h3>Matt Brandon</h3>
+                <h4>Freelancer</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="{{ asset('assets/img/testimonials/testimonials-5.jpg') }}" class="testimonial-img" alt="">
+                <h3>John Larson</h3>
+                <h4>Entrepreneur</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div><!-- End testimonial item -->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+
+    </section><!-- /Testimonials Section -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contact</h2>
+        <div><span>Contactez-</span> <span class="description-title">Nous</span></div>
+        
+      </div><!-- End Section Title -->
+
+<div class="mb-5">
+  <iframe style="width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5624.499798015644!2d10.857646262990746!3d36.57623285400199!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1302bbbb1dd2ee7b%3A0x72079df2784587b4!2sAgil%20Korba!5e0!3m2!1sfr!2stn!4v1752772144110!5m2!1sfr!2stn"  frameborder="0" allowfullscreen=""></iframe>
+</div><!-- End Google Maps -->
+
+      <div class="container" data-aos="fade">
+
+        <div class="row gy-5 gx-lg-5">
+
+          <div class="col-lg-4">
+
+            <div class="info">
+              <h3>Contactez-nous</h3>
+              <p>N'hésitez pas à nous contacter pour toute question ou demande. Nous sommes à votre écoute pour vous aider.</p>
+
+              <div class="info-item d-flex">
+                <i class="bi bi-geo-alt flex-shrink-0"></i>
+                <div>
+                  <h4>Localisation:</h4>
+                  <p>Nabeul,Korba  8070 </p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="info-item d-flex">
+                <i class="bi bi-envelope flex-shrink-0"></i>
+                <div>
+                  <h4>Email:</h4>
+                  <p>abdelkader.belhaj@esprit.tn</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="info-item d-flex">
+                <i class="bi bi-phone flex-shrink-0"></i>
+                <div>
+                  <h4>Appelez-nous :</h4>
+                  <p>+216 58069420</p>
+                </div>
+              </div><!-- End Info Item -->
+
+            </div>
+
+          </div>
+
+
+
+<script>
+function checkAuthBeforeSubmit(targetUrl, formId = null) {
+    // Vérifie si l'utilisateur est connecté
+    {% if app.session.get('user') %}
+        // Si connecté, soumet le formulaire ou redirige
+        if (formId) {
+            document.getElementById(formId).submit();
+        } else {
+            window.location.href = targetUrl;
+        }
+    {% else %}
+        // Si non connecté, affiche l'alerte
+        showLoginAlert(targetUrl);
+    {% endif %}
+}
+
+function showLoginAlert(targetUrl) {
+    const alertBox = document.createElement('div');
+    alertBox.style.position = 'fixed';
+    alertBox.style.top = '0';
+    alertBox.style.left = '0';
+    alertBox.style.width = '100%';
+    alertBox.style.height = '100%';
+    alertBox.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    alertBox.style.display = 'flex';
+    alertBox.style.justifyContent = 'center';
+    alertBox.style.alignItems = 'center';
+    alertBox.style.zIndex = '9999';
+    
+    // Création d'un élément script pour stocker la targetUrl
+    const urlScript = document.createElement('script');
+    urlScript.textContent = `var loginRedirectUrl = '${targetUrl}';`;
+    
+    alertBox.innerHTML = `
+        <div style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;">
+            <h4 style="color: #ff6b35; margin-bottom: 20px;">Connexion requise</h4>
+            <p style="margin-bottom: 25px;">Vous devez vous connecter avant de pouvoir effectuer cette action.</p>
+            <div>
+                <button id="loginAlertBtn" 
+                        style="background: #ff6b35; color: white; border: none; padding: 10px 20px; 
+                               border-radius: 5px; font-weight: bold; cursor: pointer; margin-right: 10px;">
+                    Se connecter
+                </button>
+                <button id="cancelAlertBtn" 
+                        style="background: #6c757d; color: white; border: none; padding: 10px 20px; 
+                               border-radius: 5px; cursor: pointer;">
+                    Annuler
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(alertBox);
+    document.body.appendChild(urlScript);
+    
+    // Gestion des événements avec addEventListener
+    document.getElementById('loginAlertBtn').addEventListener('click', function() {
+        window.location.href = '{{ path('app_login') }}?redirect=' + encodeURIComponent(loginRedirectUrl);
+    });
+    
+    document.getElementById('cancelAlertBtn').addEventListener('click', function() {
+        alertBox.remove();
+        urlScript.remove();
+    });
+}
+</script>
+
+
+
+{% block bodyContact %}
+
+
+{% endblock %}
+
+
+
+
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Contact Section -->
+
+  </main>
+<footer id="footer" class="footer dark-background">
+
+  <div class="container">
+    <div class="row gy-3">
+      <div class="col-lg-3 col-md-6 d-flex">
+        <i class="bi bi-geo-alt icon"></i>
+        <div class="address">
+          <h4>Adresse</h4>
+          <p>108 rue Adam</p>
+          <p>New York, NY 535022</p>
+          <p></p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 d-flex">
+        <i class="bi bi-telephone icon"></i>
+        <div>
+          <h4>Contact</h4>
+          <p>
+            <strong>Téléphone :</strong> <span>+1 5589 55488 55</span><br>
+            <strong>Email :</strong> <span>info@example.com</span><br>
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 d-flex">
+        <i class="bi bi-clock icon"></i>
+        <div>
+          <h4>Horaires d’ouverture</h4>
+          <p> 
+            <strong>Ouvert tous </strong> <span>les jours</span><br>
+            <span>de 07h00 à </span> <span>02h00</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <h4>Suivez-nous</h4>
+        <div class="social-links d-flex">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container copyright text-center mt-4">
+    <div class="credits">
+      <!-- Tous les liens dans le pied de page doivent rester intacts. -->
+      <!-- Vous pouvez supprimer les liens uniquement si vous avez acheté la version pro. -->
+      <!-- Informations sur la licence : https://bootstrapmade.com/license/ -->
+      <!-- Achetez la version pro avec formulaire de contact PHP/AJAX fonctionnel : [buy-url] -->
+        <p>Développé par  - <a href="mailto:ton.email@example.com">abdelkader.belhaj@esprit.tn</a></p>
+
+    </div>
+  </div>
+
+</footer>
+
+
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+
+
+
+
+
+
+          <!-- Vendor JS Files -->
+  <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+  <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{ asset('assets/js/main.js') }}"></script>
+
+  
+    </body>
+
+    
+</html>

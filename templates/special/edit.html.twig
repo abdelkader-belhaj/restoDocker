@@ -1,0 +1,41 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block title %}Modifier Special{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-warning text-dark">
+            <h2 class="mb-0">Modifier un Special</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Titre :</label>
+                    <input type="text" name="title" value="{{ special.title }}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sous-titre :</label>
+                    <input type="text" name="sousTitre" value="{{ special.sousTitre }}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description :</label>
+                    <textarea name="description" class="form-control" rows="4">{{ special.description }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image :</label>
+                    <input type="file" name="image" class="form-control">
+                    {% if special.image %}
+                        <div class="mt-2">
+                            <img src="{{ special.image }}" alt="Image" style="max-width:120px; border-radius:8px;">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{{ path('special_index') }}" class="btn btn-outline-secondary">Retour</a>
+                    <button type="submit" class="btn btn-warning">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

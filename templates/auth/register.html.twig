@@ -1,0 +1,118 @@
+
+{% extends 'baseLogin.html.twig' %}
+
+
+
+{% block body %}
+
+
+{% block title %}Inscription{% endblock %}
+
+{% block stylesheets %}
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/assetsA/img/hero-bg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+    }
+
+    .auth-form input {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 8px 0;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 25px;
+        color: white;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .auth-form input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .auth-form button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .auth-form button:hover {
+        transform: translateY(-2px);
+    }
+
+    .flash-messages {
+        margin-bottom: 20px;
+    }
+
+    .flash-messages .alert {
+        background-color: rgba(255, 87, 87, 0.2);
+        color: #ff5757;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .auth-links {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .auth-links a {
+        color: #667eea;
+        text-decoration: none;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+
+<div class="auth-container">
+    <div class="flash-messages">
+        {% for message in app.flashes('error') %}
+            <div class="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <form class="auth-form" action="{{ path('app_register_submit') }}" method="post">
+        <input type="text" id="nomComplete" name="nomComplete" placeholder="Nom complet" required>
+        <input type="tel" id="tel" name="tel" placeholder="Téléphone" required>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <input type="password" id="pwd" name="pwd" placeholder="Mot de passe" required>
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <div class="auth-links">
+        <p>Déjà un compte ? <a href="{{ path('app_login') }}">Connectez-vous</a></p>
+    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

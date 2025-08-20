@@ -1,0 +1,31 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Détails du Special{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-info text-white">
+            <h2 class="mb-0">{{ special.title }}</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="text-muted">{{ special.sousTitre }}</h5>
+            <p>{{ special.description }}</p>
+            {% if special.image %}
+                <img src="{{ special.image }}" alt="Image" class="img-fluid rounded mb-3" style="max-width:250px;">
+            {% endif %}
+            <div class="d-flex justify-content-between mt-3">
+                <a href="{{ path('special_edit', {'key': key}) }}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Modifier
+                </a>
+                <form action="{{ path('special_delete', {'key': key}) }}" method="post" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce special ?');">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </button>
+                </form>
+                <a href="{{ path('special_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block bodyy %}
+<!-- Menu Section -->
+<section id="menu" class="menu section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Menu</h2>
+    <div><span>Check Our Tasty</span> <span class="description-title">Menu</span></div>
+  </div>
+
+  <div class="container isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+    <!-- Filtres dynamiques -->
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-lg-12 d-flex justify-content-center">
+        <ul class="menu-filters isotope-filters">
+          <li data-filter="*" class="filter-active">Tous</li>
+          {% for type in types %}
+            <li data-filter=".{{ type }}">{{ type|replace({'filter-':''})|capitalize }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Affichage des menus -->
+    <div class="row isotope-container" data-aos="fade-up" data-aos-delay="200">
+      {% for menu in menus %}
+        <div class="col-lg-6 menu-item isotope-item {{ menu.type }}">
+          <img src="{{ menu.image }}" class="menu-img" alt="">
+          <div class="menu-content">
+            <a href="#">{{ menu.titre }}</a><span>$9.95</span>
+          </div>
+          <div class="menu-ingredients">
+            {{ menu.description }}
+          </div>
+        </div>
+      {% else %}
+        <p>Aucun menu trouvé.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,40 @@
+# config/services.yaml
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # Firebase Configuration
+    App\Service\FirebaseService:
+        arguments:
+            $credentialsPath: '%kernel.project_dir%/config/firebase/symfony07-firebase-adminsdk-fbsvc-f3febd9084.json'
+            $databaseUrl: 'https://symfony07-default-rtdb.firebaseio.com'
+
+    # Cloudinary Service
+    App\Service\CloudinaryUploader:
+        arguments:
+            $cloudName: '%env(CLOUDINARY_NAME)%'
+            $apiKey: '%env(CLOUDINARY_API_KEY)%'
+            $apiSecret: '%env(CLOUDINARY_API_SECRET)%'
+
+    # Auth Service
+    App\Service\AuthService:
+        arguments:
+            $requestStack: '@request_stack'
+
+    # Security Subscriber
+    App\EventSubscriber\SecuritySubscriber:
+        arguments:
+            $router: '@router'
+            $requestStack: '@request_stack'
+        tags:
+            - { name: kernel.event_subscriber, priority: 10 }

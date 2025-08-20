@@ -1,0 +1,93 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Nouvelle Commande{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Créer une nouvelle commande</h1>
+    
+    <form method="post" class="needs-validation" novalidate>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <h3>Informations du client</h3>
+                <div class="mb-3">
+                    <label for="customerName" class="form-label">Nom du client</label>
+                    <input type="text" class="form-control" id="customerName" name="customerName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Téléphone</label>
+                    <input type="tel" class="form-control" id="phone" name="phone">
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Adresse</label>
+                    <input type="text" class="form-control" id="address" name="address">
+                </div>
+                <div class="mb-3">
+                    <label for="tableNumber" class="form-label">Numéro de table</label>
+                    <input type="text" class="form-control" id="tableNumber" name="tableNumber">
+                </div>
+                <div class="mb-3">
+                    <label for="orderType" class="form-label">Type de commande</label>
+                    <select class="form-select" id="orderType" name="orderType" required>
+                        <option value="Sur place">Sur place</option>
+                        <option value="À emporter">À emporter</option>
+                        <option value="Livraison">Livraison</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h3>Détails de la commande</h3>
+                <div class="mb-3">
+                    <label for="menuItem" class="form-label">Sélectionner un plat du menu</label>
+                    <select class="form-select" id="menuItem" name="menuItem" required>
+                        <option value="">Choisir un plat...</option>
+                        {% for id, item in menuItems %}
+                            <option value="{{ id }}" 
+                                    data-title="{{ item.title }}"
+                                    data-category="{{ item.category }}"
+                                    data-price="{{ item.price }}">
+                                {{ item.title }} ({{ item.category }}) - {{ item.price }} TND
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Nom du plat</label>
+                    <input type="text" class="form-control" id="title" name="title" required readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Catégorie</label>
+                    <input type="text" class="form-control" id="category" name="category" required readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantité</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="unitPrice" class="form-label">Prix unitaire (TND)</label>
+                    <input type="number" class="form-control" id="unitPrice" name="unitPrice" step="0.01" required readonly>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('menuItem').addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const title = selectedOption.dataset.title;
+                const category = selectedOption.dataset.category;
+                const price = selectedOption.dataset.price;
+
+                document.getElementById('title').value = title;
+                document.getElementById('category').value = category;
+                document.getElementById('unitPrice').value = price;
+            });
+        </script>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Créer la commande</button>
+            <a href="{{ path('admin_orders') }}" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

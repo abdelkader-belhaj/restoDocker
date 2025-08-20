@@ -1,0 +1,10 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block title %}Ajouter une image{% endblock %}
+{% block body %}
+<h1>Ajouter une image</h1>
+<form method="post" enctype="multipart/form-data">
+  <input type="file" name="image" required><br><br>
+  <button type="submit">Uploader</button>
+</form>
+<a href="{{ path('gallery_index') }}">Retour</a>
+{% endblock %}

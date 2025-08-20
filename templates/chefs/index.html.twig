@@ -1,0 +1,68 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Liste des Chefs{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Gestion des Chefs</h2>
+        <a href="{{ path('chefs_create') }}" class="btn btn-primary d-flex align-items-center">
+            <i class="fas fa-plus me-1"></i>Ajouter un chef
+        </a>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Photo</th>
+                        <th>Nom</th>
+                        <th>Titre</th>
+                        <th style="width: 180px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, chef in chefs %}
+                        <tr>
+                            <td>
+                                {% if chef.image %}
+                                    <img src="{{ chef.image }}" alt="Photo de {{ chef.nom }}" class="rounded-circle" width="60" height="60" style="object-fit:cover;">
+                                {% else %}
+                                    <span class="text-muted">Aucune image</span>
+                                {% endif %}
+                            </td>
+                            <td class="fw-bold">{{ chef.nom }}</td>
+                            <td>{{ chef.titre }}</td>
+                            <td>
+                                <div class="d-flex justify-content-start gap-2">
+                                    <a href="{{ path('chefs_edit', {'key': key}) }}" 
+                                       class="btn btn-warning btn-xs px-2 py-1"
+                                       title="Modifier"
+                                       style="font-size: 0.75rem;">
+                                        <i class="fas fa-edit me-1"></i>Modifier
+                                    </a>
+                                    <form method="post" 
+                                          action="{{ path('chefs_delete', {'key': key}) }}" 
+                                          style="display:inline;" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chef ?');">
+                                        <button type="submit" 
+                                                class="btn btn-danger btn-xs px-2 py-1"
+                                                title="Supprimer"
+                                                style="font-size: 0.75rem;">
+                                            <i class="fas fa-trash me-1"></i>Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Aucun chef trouvé.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

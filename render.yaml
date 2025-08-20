@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: resto-symfony
+    env: php
+    buildCommand: "composer install --no-dev --optimize-autoloader"
+    startCommand: "php -S 0.0.0.0:10000 -t public"
+    envVars:
+      - key: APP_ENV
+        value: prod
+      - key: APP_DEBUG
+        value: 0
+      - key: FIREBASE_DATABASE_URL
+        value: https://symfony07-default-rtdb.firebaseio.com/
+      - key: FIREBASE_CREDENTIALS_PATH
+        value: /etc/secrets/firebase.json
+      - key: CLOUDINARY_NAME
+        value: dp886npjh
+      - key: CLOUDINARY_API_KEY
+        value: 881356362652558
+      - key: CLOUDINARY_API_SECRET
+        value: Yx7EaNImIxkXhVEsr0DWa2PvgBo

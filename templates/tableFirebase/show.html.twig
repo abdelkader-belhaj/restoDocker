@@ -1,0 +1,22 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Détail de la Réservation{% endblock %}
+
+{% block body %}
+<h1>Détail de la Réservation</h1>
+<ul class="list-group mb-3">
+    <li class="list-group-item"><strong>Nom:</strong> {{ table.name }}</li>
+    <li class="list-group-item"><strong>Email:</strong> {{ table.email }}</li>
+    <li class="list-group-item"><strong>Téléphone:</strong> {{ table.tel }}</li>
+    <li class="list-group-item"><strong>Date:</strong> {{ table.date }}</li>
+    <li class="list-group-item"><strong>Heure:</strong> {{ table.time }}</li>
+    <li class="list-group-item"><strong>Nombre de personnes:</strong> {{ table.numberPeople }}</li>
+    <li class="list-group-item"><strong>Message:</strong> {{ table.message }}</li>
+</ul>
+<a href="{{ path('firebase_table_edit', {'key': key}) }}" class="btn btn-warning">Modifier</a>
+<a href="{{ path('firebase_table_index') }}" class="btn btn-secondary">Retour</a>
+<form method="post" action="{{ path('firebase_table_delete', {'key': key}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ key) }}">
+    <button class="btn btn-danger">Supprimer</button>
+</form>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modifier la Réservation{% endblock %}
+
+{% block body %}
+<h1>Modifier la Réservation</h1>
+<form method="post">
+    <div class="mb-3">
+        <label>Nom</label>
+        <input type="text" name="name" class="form-control" value="{{ table.name }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" value="{{ table.email }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Téléphone</label>
+        <input type="text" name="tel" class="form-control" value="{{ table.tel }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Date</label>
+        <input type="date" name="date" class="form-control" value="{{ table.date }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Heure</label>
+        <input type="time" name="time" class="form-control" value="{{ table.time }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Nombre de personnes</label>
+        <input type="number" name="numberPeople" class="form-control" value="{{ table.numberPeople }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Message</label>
+        <textarea name="message" class="form-control">{{ table.message }}</textarea>
+    </div>
+    <button class="btn btn-success">Enregistrer</button>
+    <a href="{{ path('firebase_table_index') }}" class="btn btn-secondary">Retour</a>
+</form>
+{% endblock %}

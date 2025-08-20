@@ -1,0 +1,39 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modifier Chef{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Modifier un Chef</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Nom :</label>
+                    <input type="text" name="nom" value="{{ chef.nom }}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Titre :</label>
+                    <input type="text" name="titre" value="{{ chef.titre }}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image actuelle :</label><br>
+                    {% if chef.image %}
+                        <img src="{{ chef.image }}" alt="Photo actuelle" class="rounded mb-2" width="80" height="80" style="object-fit:cover;"><br>
+                    {% else %}
+                        <span class="text-muted">Aucune image</span><br>
+                    {% endif %}
+                    <label class="form-label mt-2">Changer l’image :</label>
+                    <input type="file" name="image" class="form-control">
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{{ path('chefs_list') }}" class="btn btn-outline-secondary">Retour</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
