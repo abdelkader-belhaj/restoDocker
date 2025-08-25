@@ -11,6 +11,6 @@ final class HealthControllerPhpController extends AbstractController
     #[Route('/health', name: 'health_check')]
 public function check(): Response
 {
-    return new Response('OK', 200);
+    return new Response('OKh', 200);
 }
 }
