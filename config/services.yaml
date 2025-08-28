@@ -6,6 +6,7 @@ services:
         autowire: true
         autoconfigure: true
 
+    # Scan automatique de tous les services dans src/, sauf exclusions
     App\:
         resource: '../src/'
         exclude:
@@ -13,7 +14,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # Firebase Configuration
+    # Firebase Service
     App\Service\FirebaseService:
         arguments:
             $credentialsPath: '%kernel.project_dir%/config/firebase/symfony07-firebase-adminsdk-fbsvc-f3febd9084.json'
@@ -38,3 +39,9 @@ services:
             $requestStack: '@request_stack'
         tags:
             - { name: kernel.event_subscriber, priority: 10 }
+
+    # Firebase Authenticator
+    App\Security\FirebaseAuthenticator:
+        autowire: true
+        autoconfigure: true
+        public: false

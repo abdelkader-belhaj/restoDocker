@@ -9,8 +9,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends AbstractController
 {
-    #[Route('/front', name: 'app_front')]
+    #[Route('/', name: 'front_index')]
     public function index(FirebaseService $firebase): Response
+    {
+        return $this->render('front/front.html.twig', [
+            'menus' => $firebase->getAllMenus(),
+            'types' => ['Petit déjeuner', 'Déjeuner', 'Dîner', 'Collation', 'Brunch']
+        ]);
+    }
+
+    #[Route('/front', name: 'app_front')]
+    public function frontIndex(FirebaseService $firebase): Response
     {
         $menus = $firebase->getAllMenus();
         $types = ['Petit déjeuner', 'Déjeuner', 'Dîner', 'Collation', 'Brunch'];

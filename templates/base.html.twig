@@ -62,14 +62,14 @@
         <div class="dropdown">
             <button class="btn btn-auth dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle me-2"></i>
-                <span>nom : {{ app.session.get('user').nomComplete }}</span>
+                <span>nom : {{ app.session.get('user').nomComplete ?? 'Nom inconnu' }}</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end auth-dropdown" aria-labelledby="userDropdown">
                 <li class="dropdown-header">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-person-badge me-2"></i>
                         <div>
-                            <h6 class="mb-0">{{ app.session.get('user').nomComplete }}</h6>
+                            <h6 class="mb-0">{{ app.session.get('user').nomComplete ?? 'Nom inconnu' }}</h6>
                             <small class="text-muted">{{ app.session.get('user').email }}</small>
                         </div>
                     </div>

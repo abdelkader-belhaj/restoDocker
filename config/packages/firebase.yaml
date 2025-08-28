@@ -1,0 +1,10 @@
+parameters:
+    firebase_credentials_path: '%env(FIREBASE_CREDENTIALS_PATH)%'
+    firebase_database_url: '%env(FIREBASE_DATABASE_URL)%'
+
+services:
+    Kreait\Firebase\Factory:
+        class: Kreait\Firebase\Factory
+        calls:
+            - withServiceAccount: ['%firebase_credentials_path%']
+            - withDatabaseUri: ['%firebase_database_url%']

@@ -905,7 +905,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/reservation.jpg);"></div>
 
       <div class="col-lg-8 d-flex align-items-center reservation-form-bg" data-aos="fade-up" data-aos-delay="200">
-        <form action="{{ path('firebase_table_new') }}" method="post" role="form" id="reservationForm" novalidate>
+        <form action="{{ path('front_index') }}" method="post" role="form" id="reservationForm" novalidate>
           <div class="row gy-4">
             <div class="col-lg-4 col-md-6">
               <input type="text" name="name" class="form-control" placeholder="Votre nom">
@@ -934,7 +934,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
 
 <div class="text-center mt-3">
-    <button type="button" onclick="checkAuthBeforeSubmit('{{ path('firebase_table_new') }}', 'reservationForm')" class="btn btn-primary">Confirmer la réservation</button>
+    <button type="button" onclick="checkAuthBeforeSubmit('{{ path('front_index') }}', 'reservationForm')" class="btn btn-primary">Confirmer la réservation</button>
 </div>
         </form>
       </div>

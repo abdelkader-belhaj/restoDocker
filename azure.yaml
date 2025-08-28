@@ -1,0 +1,15 @@
+# azure.yaml
+name: restoDocker
+services:
+  web:
+    project: .
+    language: php
+    host: webapp
+    hooks:
+      predeploy:
+        windows:
+          shell: pwsh
+          run: |
+            composer install --no-dev --optimize-autoloader
+            php bin/console cache:clear --env=prod
+            php bin/console assets:install public

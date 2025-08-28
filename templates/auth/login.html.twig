@@ -114,6 +114,11 @@
     </div>
 
     <form class="auth-form" action="{{ path('app_login_submit') }}" method="post">
+        {# CSRF token used by Symfony form_login when enable_csrf: true #}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        {# Optional firebase token submitted from client-side Firebase auth (if used) #}
+        <input type="hidden" id="firebase_token" name="firebase_token" value="">
+
         <input type="email" id="email" name="email" placeholder="Email" required>
         <input type="password" id="pwd" name="pwd" placeholder="Mot de passe" required>
         <button type="submit">Se connecter</button>

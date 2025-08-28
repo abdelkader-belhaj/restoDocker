@@ -1,5 +1,41 @@
+# config/packages/security.yaml
 security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        firebase_users:
+            memory:
+                users: []
+
     firewalls:
-        main:
-            pattern: ^/health
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        
+        main:
+            pattern: ^/
+            lazy: true
+            provider: app_user_provider
+            entry_point: App\Security\FirebaseAuthenticator
+            logout:
+                path: app_logout
+
+    access_control:
+        # Routes publiques
+        - { path: ^/health, roles: PUBLIC_ACCESS }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/front, roles: PUBLIC_ACCESS }
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        # Routes protégées
+        - { path: ^/dashboard, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }

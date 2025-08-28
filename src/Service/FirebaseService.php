@@ -8,6 +8,7 @@ use Kreait\Firebase\Database;
 class FirebaseService
 {
     private Database $database;
+    private $auth;
 
     public function __construct(string $credentialsPath, string $databaseUrl)
     {
@@ -16,6 +17,7 @@ class FirebaseService
             ->withDatabaseUri($databaseUrl);
 
         $this->database = $factory->createDatabase();
+        $this->auth = $factory->createAuth();
     }
 
     public function getDatabase(): Database
@@ -300,5 +302,19 @@ class FirebaseService
         return array_filter($users, function($user) {
             return !isset($user['type']) || $user['type'] === 'client';
         });
+    }
+
+    public function verifyToken(string $token): array
+    {
+        try {
+            $verifiedToken = $this->auth->verifyIdToken($token);
+            return [
+                'email' => $verifiedToken['email'] ?? null,
+                'uid' => $verifiedToken['sub'] ?? $verifiedToken['user_id'] ?? null,
+                'verified' => true
+            ];
+        } catch (\Exception $e) {
+            throw new \Exception('Token invalide : ' . $e->getMessage());
+        }
     }
 }
