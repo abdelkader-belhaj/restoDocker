@@ -1,43 +1,32 @@
-FROM php:8.2-fpm AS build
-
-
-
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-RUN apt-get update && apt-get install -y \
-    git unzip libicu-dev libzip-dev zip \
-    && docker-php-ext-install intl pdo zip
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /app
-COPY . .
-
-# Configurer composer pour autoriser symfony/flex
-RUN composer config --no-plugins allow-plugins.symfony/flex true
-
-# Installer les dépendances et exécuter les commandes manuellement
-RUN composer install --no-dev --optimize-autoloader && \
-    php bin/console cache:clear --env=prod && \
-    php bin/console cache:warmup --env=prod && \
-    php bin/console assets:install public
-
-# Étape finale (plus légère)
+# Utiliser PHP-FPM officiel
 FROM php:8.2-fpm
 
+# Installer dépendances PHP et Nginx
 RUN apt-get update && apt-get install -y \
-    libicu-dev libzip-dev \
-    && docker-php-ext-install intl pdo zip
-    
+    git unzip libicu-dev libonig-dev libzip-dev libpng-dev nginx \
+    && docker-php-ext-install intl pdo pdo_mysql zip gd opcache
 
-WORKDIR /app
-COPY --from=build /app .
+# Installer Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN chown -R www-data:www-data /app
+# Définir répertoire de travail
+WORKDIR /var/www
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+# Copier projet Symfony
+COPY . .
 
-EXPOSE 8000
+# Installer vendors Symfony
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-CMD ["/docker-entrypoint.sh"]
+# Copier configuration Nginx
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copier script de démarrage
+COPY ./start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Exposer le port 80
+EXPOSE 80
+
+# Lancer le conteneur
+CMD ["/start.sh"]
